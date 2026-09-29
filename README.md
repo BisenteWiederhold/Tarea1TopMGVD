@@ -28,7 +28,7 @@ g++ -O2 -o exact_hh exact_hh.cpp
 ./exact_hh traza_ddos.bin --key dst -W 60 --delta 10 --phi 0.01 --query 163.210.30.13 --out-query exact_ddos.csv
 ```
 
-#Ejecucion de algoritmos
+# Ejecucion de algoritmos
 
 Count-Min Sketch
 ```bash
