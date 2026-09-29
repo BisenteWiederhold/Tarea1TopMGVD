@@ -24,12 +24,16 @@ g++ -O2 -o exact_hh exact_hh.cpp
 #Ejecucion de algoritmos
 
 Count-Min Sketch
+```bash
 g++ -O2 -o tarea_cms tarea_cms.cpp
 ./tarea_cms
+```
 
 # CountSketch
+```bash
 g++ -O2 -o tarea_cs tarea_cs.cpp
 ./tarea_cs
+```
 
 
 
