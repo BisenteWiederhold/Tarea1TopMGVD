@@ -16,7 +16,6 @@ Para correr los experimentos en tu máquina, asegúrate de tener lo siguiente:
 *   `tarea_cs.cpp`: Implementación del CountSketch (usa el signo y la mediana para limpiar el ruido).
 *   `exact_hh.cpp`: Código base para sacar la frecuencia real (Ground Truth) directamente de la traza.
 *   `graficos.py`: Script de Python que lee los CSV y arma el gráfico final comparativo.
-*   `informe.tex` y `udec.png`: Archivos para generar el informe en LaTeX.
 
 *Nota: El archivo original de la traza (`traza_ddos.bin`) no está subido porque supera el límite de tamaño de GitHub. Debes colocarlo en la misma carpeta antes de correr los códigos.*
 
