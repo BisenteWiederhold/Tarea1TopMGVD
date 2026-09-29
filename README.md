@@ -3,6 +3,14 @@
 Proyecto para la asignatura Tópicos en Manejos de Grandes Volúmenes de Datos (UdeC). 
 
 El objetivo es procesar una traza de red pesada para encontrar un ataque DDoS dirigido a una IP específica. Para no colapsar la RAM del computador, se implementaron dos algoritmos probabilísticos: **Count-Min Sketch** y **CountSketch**.
+
+## Qué necesitas descargar para probarlo
+
+Para correr los experimentos en tu máquina, asegúrate de tener lo siguiente:
+
+*   **La traza binaria (`traza_ddos.bin`):** Como pesa alrededor de 3 GB, no está subida a GitHub. Debes descargarla desde la plataforma del curso y guardarla en la misma carpeta que los códigos fuente.
+*   **Compilador C++:** Necesitas `g++` para compilar los scripts. En Windows, lo ideal es usar el entorno MSYS2 (MinGW).
+
 # Carpeta
 *   `tarea_cms.cpp`: Implementación del Count-Min Sketch.
 *   `tarea_cs.cpp`: Implementación del CountSketch (usa el signo y la mediana para limpiar el ruido).
