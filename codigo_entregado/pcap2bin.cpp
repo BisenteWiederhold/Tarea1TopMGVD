@@ -43,7 +43,9 @@
 #include <string>
 #include <vector>
 #include <fcntl.h>
+#ifdef _WIN32
 #include <io.h>
+#endif
 
 // ---------------------------------------------------------------- constantes
 
@@ -178,8 +180,10 @@ static void usage(const char *prog) {
 
 int main(int argc, char **argv) {
 
+#ifdef _WIN32
     _setmode(_fileno(stdin), _O_BINARY);
     _setmode(_fileno(stdout), _O_BINARY);
+#endif
     freopen(NULL, "rb", stdin);
     freopen(NULL, "wb", stdout);
     

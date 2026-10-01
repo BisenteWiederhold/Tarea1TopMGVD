@@ -8,7 +8,7 @@ Estado revisado el 30-09-2026 contra `Tarea1_2026.md` y el código en `codigo_en
 Traza oficial del enunciado (§2), MAWI samplepoint-F, 3 de diciembre de 2018, 14:00:
 **https://mawi.wide.ad.jp/mawi/samplepoint-F/2018/201812031400.pcap.gz**
 
-- [ ] Confirmar que `traza.bin` salió de esa traza (`zcat 201812031400.pcap.gz | ./pcap2bin > traza.bin`). Los JSON indican `registros_base = 123383971`, que debería coincidir con lo que entrega `pcap2bin`.
+- [x] Confirmar la traza local: gzip válido y conversión en streaming con `pcap2bin` = **123383971 registros IPv4** (2961215304 bytes), coincidente con el ground truth. No se dejó una copia de varios GB en el repo.
 - [x] Poner la URL en el `README.md` (hoy sólo dice "descargar desde la plataforma del curso") y en el informe, junto con la semilla 42.
 - [ ] Usar exactamente esa traza como base de las tres versiones: sin ataque, con DDoS y con scan.
 
@@ -67,8 +67,8 @@ Mientras esto no se corrija, todos los resultados posteriores son inválidos.
 - [x] **MRE** sobre el conjunto J: ventanas con τ > 300 s (inicio del ataque) y con algún paquete del ataque todavía dentro de la ventana (τ < 330 + 60 s), con f_j(x) > 0. Son unas 8 ventanas.
 - [x] Reportar también el **error por ventana** y/o repetir con **2 o 3 semillas de hash** distintas (el MRE de CS puede no ser monótono en w).
 - [x] **Latencia de detección:** primera evaluación que cumple el criterio, menos 300 s (resolución de 10 s), para la referencia exacta, CMS y CS, en cada w.
-- [ ] Reportar y explicar los **falsos positivos de CMS** con w chico (detecta una ventana antes que la referencia exacta). No corregirlos.
-- [ ] Comparar CMS y CS en precisión, memoria y latencia, explicándolo por colisiones y por la diferencia entre el estimador mínimo y la mediana.
+- [x] Reportar y explicar los **falsos positivos de CMS** con w chico (detecta una ventana antes que la referencia exacta). No corregirlos.
+- [x] Comparar CMS y CS en precisión, memoria y latencia, explicándolo por colisiones y por la diferencia entre el estimador mínimo y la mediana.
 
 ## 3. Estimación del cambio Δf_j(x) (§6.3)
 
@@ -78,7 +78,7 @@ Mientras esto no se corrija, todos los resultados posteriores son inválidos.
 - [x] Estimador **CMS-mediana** sobre ΔA_j (mediana de `ΔA_j[i][h_i(x)]`; no usar el mínimo).
 - [x] Contadores con signo para ΔA en CMS (hoy CMS usa `uint32_t`).
 - [x] Figura por ataque con Δf exacto, Δf̂ CS y Δf̂ CMS-mediana alrededor del inicio (300 s) y del término (330 s y la salida hacia 390 s).
-- [ ] Identificar los mayores incrementos y decrementos y discutir qué estimador aproxima mejor.
+- [x] Identificar los mayores incrementos y decrementos y discutir qué estimador aproxima mejor.
 
 ## 4. Scripts de reproducibilidad
 
@@ -92,26 +92,21 @@ Hecho: `run_experimentos.sh` → `elegir_claves.py`, `exact_hh`, `sliding_sketch
 
 ## 5. Informe (máximo 6 páginas sin anexos)
 
-- [ ] Diseño de la ventana deslizante: el anillo, el agregado A, la convención de bordes, la precarga y la autoverificación de N_j.
-- [ ] Resultados de la validación sin ataque (errores por w).
-- [ ] Figuras de frecuencia exacta contra estimada para los 2 ataques.
-- [ ] Figura(s) de Δf exacto, CS y CMS-mediana.
-- [ ] **Tabla resumen** de error (MRE), memoria y latencia para CMS y CS en cada w y cada ataque.
-- [ ] Preguntas obligatorias (§7):
-  - [ ] 1. ¿Por qué la linealidad da un costo independiente del número de paquetes en la ventana? (2·d·w contadores por rotación)
-  - [ ] 2. ¿Qué diferencias hay entre el error de CMS y el de CS al reducir w?
-  - [ ] 3. ¿Qué ataque se detecta con más claridad y por qué la clave es distinta (dst para DDoS, src para scan)?
-  - [ ] 4. ¿Qué información agrega Δf_j(x) frente a mirar sólo f_j(x)?
-  - [ ] 5. Comparar Δf̂ CS con Δf̂ CMS-mediana. ¿Por qué CS mantiene su estimador y CMS pierde sus garantías?
-- [ ] Indicar la **URL de la traza** (`https://mawi.wide.ad.jp/mawi/samplepoint-F/2018/201812031400.pcap.gz`) y la **semilla** de los ataques (42) y de los hash.
+- [x] Informe redactado en `INFORME.md`: diseño, validación, figuras, resumen cuantitativo, análisis de Δf y respuestas a las cinco preguntas.
 
 ## 6. Presentación oral (10 min)
 
-- [ ] Diapositivas sobre el diseño de la ventana deslizante, el uso de la linealidad, los resultados de ambos ataques y las conclusiones de CMS contra CS.
+- [x] Deck de 9 diapositivas creado en `codigo_entregado/presentacion_tarea1.pptx`, con notas del presentador y los resultados de ambos ataques.
 
 ## 7. Repositorio y README
 
 - [x] Actualizar `README.md`: hoy sólo habla de DDoS con CMS/CS sin parámetros. Faltan el scan, los parámetros por CLI, cómo reproducir todo y la URL y semilla.
 - [x] Confirmar que no se suben trazas (`*.bin` y el pcap ya están en `.gitignore`; agregar también `*.pcap.gz`).
-- [ ] Decidir si los CSV y PNG de resultados se versionan; si se versionan, regenerarlos con el código corregido.
-- [ ] Decidir si `Tarea1_2026.md` se sube al repo (hoy está sin trackear).
+- [x] CSV y PNG de resultados versionados; ya están en Git y corresponden a las corridas reportadas.
+- [x] `Tarea1_2026.md` está versionado en Git.
+
+## Aún pendiente
+
+- [ ] Preparar las diapositivas para la presentación oral de 10 minutos.
+- [ ] Si el curso exige PDF o formato específico para el informe, exportar `INFORME.md` al formato solicitado y verificar que no supere seis páginas.
+- [ ] Completar los nombres de integrantes en el informe y en la portada de las diapositivas.

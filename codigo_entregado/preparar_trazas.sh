@@ -14,6 +14,7 @@ cd "$(dirname "$0")"
 
 URL=https://mawi.wide.ad.jp/mawi/samplepoint-F/2018/201812031400.pcap.gz
 PCAP=201812031400.pcap.gz
+PCAP_SOURCE=${PCAP_SOURCE:-}
 SEED=42
 PYTHON=${PYTHON:-python}
 
@@ -41,19 +42,30 @@ fi
 if [ -s traza.bin ]; then
     echo "[3/5] traza.bin ya existe, se omite la descarga"
 else
-    echo "[3/5] Descargando $URL"
-    # -C - reanuda una descarga interrumpida; el servidor de MAWI suele cortar la
-    # conexión en descargas largas, así que se reintenta hasta completar el archivo.
-    SIZE=$(curl -sIL "$URL" | grep -i '^content-length:' | tail -1 | tr -dc '0-9')
-    for intento in $(seq 1 30); do
-        [ -f "$PCAP" ] && [ "$(stat -c %s "$PCAP")" = "$SIZE" ] && break
-        curl -sS -L -C - -o "$PCAP" "$URL" || echo "  intento $intento interrumpido, reanudando..."
-    done
-    [ "$(stat -c %s "$PCAP")" = "$SIZE" ] || { echo "Descarga incompleta" >&2; exit 1; }
-    gzip -t "$PCAP"
+    if [ -n "$PCAP_SOURCE" ]; then
+        [ -s "$PCAP_SOURCE" ] || { echo "No existe PCAP_SOURCE: $PCAP_SOURCE" >&2; exit 1; }
+        echo "[3/5] Usando PCAP_SOURCE=$PCAP_SOURCE"
+    elif [ -s "$PCAP" ]; then
+        PCAP_SOURCE="$PCAP"
+    elif [ -s "${HOME}/Downloads/$PCAP" ]; then
+        PCAP_SOURCE="${HOME}/Downloads/$PCAP"
+        echo "[3/5] Usando la traza de Descargas: $PCAP_SOURCE"
+    else
+        PCAP_SOURCE=$PCAP
+        echo "[3/5] Descargando $URL"
+        # -C - reanuda una descarga interrumpida; el servidor de MAWI suele cortar la
+        # conexión en descargas largas, así que se reintenta hasta completar el archivo.
+        SIZE=$(curl -sIL "$URL" | grep -i '^content-length:' | tail -1 | tr -dc '0-9')
+        for intento in $(seq 1 30); do
+            [ -f "$PCAP_SOURCE" ] && [ "$(stat -c %s "$PCAP_SOURCE")" = "$SIZE" ] && break
+            curl -sS -L -C - -o "$PCAP_SOURCE" "$URL" || echo "  intento $intento interrumpido, reanudando..."
+        done
+        [ "$(stat -c %s "$PCAP_SOURCE")" = "$SIZE" ] || { echo "Descarga incompleta" >&2; exit 1; }
+    fi
+    gzip -t "$PCAP_SOURCE"
 
     echo "      Convirtiendo pcap a traza.bin"
-    zcat "$PCAP" | ./pcap2bin > traza.bin.tmp
+    zcat "$PCAP_SOURCE" | ./pcap2bin > traza.bin.tmp
     mv traza.bin.tmp traza.bin
 fi
 

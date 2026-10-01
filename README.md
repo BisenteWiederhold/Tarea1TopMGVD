@@ -18,6 +18,11 @@ Se estima la frecuencia de una IP en una ventana deslizante de W = 60 s, que ava
 
 Las trazas (`*.bin`, `*.pcap.gz`, alrededor de 3 GB cada una) **no se suben al repositorio**. `preparar_trazas.sh` las descarga y las genera. Los `gt_*.json` contienen rutas absolutas del computador donde se generaron (campos `traza_base` y `traza_salida`); son sólo informativas.
 
+Si el pcap ya está en `~/Downloads/201812031400.pcap.gz`, `preparar_trazas.sh` lo usa directamente y evita descargar otra copia. También se puede indicar una ruta distinta con `PCAP_SOURCE=/ruta/al/201812031400.pcap.gz`. La conversión de `pcap2bin` funciona en macOS/Linux además de Windows.
+
+El borrador del informe está en [`INFORME.md`](INFORME.md); los puntos aún abiertos, incluida la presentación, están en [`PENDIENTES.md`](PENDIENTES.md).
+La presentación oral de 10 minutos está en [`codigo_entregado/presentacion_tarea1.pptx`](codigo_entregado/presentacion_tarea1.pptx); reemplazar el marcador de integrantes antes de exponer.
+
 ## Requisitos
 
 - `g++` con C++17. En Windows: MSYS2 UCRT64, ejecutando los scripts desde Git Bash o MSYS2.
