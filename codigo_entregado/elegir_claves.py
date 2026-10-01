@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""Elige claves para validar los sketches sobre la traza sin ataques (§6.1, req. 6).
-
-Cuenta la clave (src o dst) en la primera ventana (t0, t0 + W] de la traza y
-elige, de forma determinista, claves de frecuencia alta (top), media y baja.
-Escribe una IP por línea seguida de su frecuencia en esa ventana, que es el
-formato que acepta `sliding_sketch --query-file`.
-
-    python elegir_claves.py traza.bin --key dst --out claves_dst.txt
-"""
 import argparse
 
 import numpy as np
@@ -25,7 +16,7 @@ def int2ip(v):
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    p = argparse.ArgumentParser(description="Elige claves para validar los sketches sobre la traza sin ataques.")
     p.add_argument("traza")
     p.add_argument("--key", choices=["src", "dst"], required=True)
     p.add_argument("--por-grupo", type=int, default=10)

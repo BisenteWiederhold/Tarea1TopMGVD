@@ -1,19 +1,4 @@
 #!/usr/bin/env python3
-"""Figuras y tablas de la Tarea 1 a partir de los CSV de run_experimentos.sh.
-
-Entradas en --dir (por defecto resultados/):
-    exact_<exp>.csv          salida --out-query de exact_hh
-    sk_<exp>_s<semilla>.csv  salida de sliding_sketch
-y los gt_*.json del ataque en el directorio actual.
-
-Salidas en --dir:
-    validacion.csv / .md        error de CMS y CS sin ataque, por grupo de claves y w
-    error_por_ventana.csv       error de cada ventana de J, por ataque/sketch/w/semilla
-    resumen.csv / .md           MRE, memoria, latencia y falsos positivos
-    delta_extremos.csv / .md    mayores incrementos/decrementos de Delta f
-    fig_<ataque>.png            frecuencia exacta vs estimada (240-390 s)
-    fig_delta_<ataque>.png      Delta f exacto vs CS y CMS-mediana
-"""
 import argparse
 import json
 import os
@@ -239,7 +224,7 @@ def delta_extremos(exp, df):
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    p = argparse.ArgumentParser(description="Figuras y tablas a partir de los CSV de run_experimentos.sh.")
     p.add_argument("--dir", default="resultados")
     p.add_argument("--seeds", nargs="+", type=int, default=[42, 7, 1234])
     a = p.parse_args()

@@ -10,7 +10,7 @@ Traza oficial del enunciado (§2), MAWI samplepoint-F, 3 de diciembre de 2018, 1
 
 - [x] Confirmar la traza local: gzip válido y conversión en streaming con `pcap2bin` = **123383971 registros IPv4** (2961215304 bytes), coincidente con el ground truth. No se dejó una copia de varios GB en el repo.
 - [x] Poner la URL en el `README.md` (hoy sólo dice "descargar desde la plataforma del curso") y en el informe, junto con la semilla 42.
-- [ ] Usar exactamente esa traza como base de las tres versiones: sin ataque, con DDoS y con scan.
+- [x] Usar exactamente esa traza como base de las tres versiones: sin ataque, con DDoS y con scan (`preparar_trazas.sh` genera `traza_ddos.bin` y `traza_scan.bin` a partir de `traza.bin`).
 
 ## Lo que ya existe
 
@@ -93,6 +93,7 @@ Hecho: `run_experimentos.sh` → `elegir_claves.py`, `exact_hh`, `sliding_sketch
 ## 5. Informe (máximo 6 páginas sin anexos)
 
 - [x] Informe redactado en `INFORME.md`: diseño, validación, figuras, resumen cuantitativo, análisis de Δf y respuestas a las cinco preguntas.
+- [x] Versión LaTeX para entregar: `informe/informe.tex`, con el formato de los informes de S2 (encabezado con escudo, portada con logo). Respecto del borrador agrega la tabla de error absoluto y relativo sin ataque, la latencia exacta en la tabla resumen, la tabla de extremos de Δf y la variante de baja intensidad.
 
 ## 6. Presentación oral (10 min)
 
@@ -107,6 +108,6 @@ Hecho: `run_experimentos.sh` → `elegir_claves.py`, `exact_hh`, `sliding_sketch
 
 ## Aún pendiente
 
-- [ ] Preparar las diapositivas para la presentación oral de 10 minutos.
-- [ ] Si el curso exige PDF o formato específico para el informe, exportar `INFORME.md` al formato solicitado y verificar que no supere seis páginas.
-- [ ] Completar los nombres de integrantes en el informe y en la portada de las diapositivas.
+- [ ] Compilar `informe/informe.tex` en Overleaf (subir la carpeta `informe/` completa) y verificar que no supere seis páginas.
+- [ ] Completar nombres y matrículas en la portada de `informe/informe.tex` (bloque `PLACEHOLDER`) y en la portada de las diapositivas.
+- [ ] Ensayar la presentación oral (10 min) con las notas del presentador.

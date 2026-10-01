@@ -1,17 +1,4 @@
 #!/usr/bin/env bash
-# Reproduce todos los experimentos de la Tarea 1:
-#   1. compila sliding_sketch (y exact_hh si se puede);
-#   2. prepara las trazas (preparar_trazas.sh) y, además, una versión de baja
-#      intensidad de cada ataque (--pps $PPS_BAJO) para que el error de los
-#      sketches sea visible (§2 del enunciado);
-#   3. corre exact_hh: validación sin ataque (claves de frecuencia alta, media
-#      y baja) y la clave de cada ataque;
-#   4. corre sliding_sketch (CMS y CS, d = 5, w = 256, 1024, 4096, 16384) con varias
-#      semillas de hash, verificando N_j contra exact_hh en cada corrida;
-#   5. genera figuras y tablas con analisis.py.
-#
-# Es idempotente: omite los resultados que ya existen. FORCE=1 rehace todo.
-# En Windows se ejecuta desde Git Bash / MSYS2; exact_hh corre en WSL.
 set -euo pipefail
 cd "$(dirname "$0")"
 

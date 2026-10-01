@@ -20,8 +20,12 @@ Las trazas (`*.bin`, `*.pcap.gz`, alrededor de 3 GB cada una) **no se suben al r
 
 Si el pcap ya está en `~/Downloads/201812031400.pcap.gz`, `preparar_trazas.sh` lo usa directamente y evita descargar otra copia. También se puede indicar una ruta distinta con `PCAP_SOURCE=/ruta/al/201812031400.pcap.gz`. La conversión de `pcap2bin` funciona en macOS/Linux además de Windows.
 
-El borrador del informe está en [`INFORME.md`](INFORME.md); los puntos aún abiertos, incluida la presentación, están en [`PENDIENTES.md`](PENDIENTES.md).
-La presentación oral de 10 minutos está en [`codigo_entregado/presentacion_tarea1.pptx`](codigo_entregado/presentacion_tarea1.pptx); reemplazar el marcador de integrantes antes de exponer.
+## Informe y presentación
+
+- **Informe**: [`informe/informe.tex`](informe/informe.tex) es la versión de entrega, con el formato de los informes de la facultad (encabezado con el escudo y portada con el logo del departamento). Se compila con pdfLaTeX: en Overleaf basta con subir la carpeta `informe/` completa, que ya trae los logos y las cuatro figuras. [`INFORME.md`](INFORME.md) es el borrador previo en Markdown.
+- **Presentación oral** (10 min): [`codigo_entregado/presentacion_tarea1.pptx`](codigo_entregado/presentacion_tarea1.pptx), 9 diapositivas con notas del presentador.
+- Los nombres de los integrantes están como marcador (`[Integrante 1]`, `[completar nombres]`) en el informe y en la portada de la presentación.
+- El estado del trabajo está en [`PENDIENTES.md`](PENDIENTES.md).
 
 ## Requisitos
 
@@ -57,7 +61,7 @@ Con las trazas ya generadas tarda unos 10 minutos: alrededor de 1 minuto por cad
 | `elegir_claves.py` | Claves de validación sin ataque: frecuencia alta, ~1000, ~100 y ~10 en la primera ventana |
 | `claves_dst.txt`, `claves_src.txt` | Claves elegidas (IP, frecuencia en la ventana 0, grupo) |
 | `preparar_trazas.sh` | Descarga, conversión e inyección de ataques |
-| `exact_hh.cpp`, `pcap2bin.cpp`, `inject_attack.py` | Herramientas entregadas por el curso, sin modificar |
+| `exact_hh.cpp`, `pcap2bin.cpp`, `inject_attack.py` | Herramientas entregadas por el curso. Sólo se modificó `pcap2bin.cpp`: `<io.h>` y `_setmode` quedaron bajo `#ifdef _WIN32` para que compile en macOS y Linux; la conversión no cambia |
 | `Makefile` | Compila `pcap2bin`, `exact_hh` y `sliding_sketch` (en MinGW usar `make LDFLAGS=-static`) |
 
 ### Resultados (`codigo_entregado/resultados/`)

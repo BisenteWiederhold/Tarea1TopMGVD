@@ -1,33 +1,3 @@
-// sliding_sketch.cpp -- Count-Min Sketch y CountSketch sobre una ventana
-// deslizante de W = m*p segundos, mantenida con un anillo de m sub-sketches y
-// un sketch agregado A (Tarea 1, Tópicos en Grandes Volúmenes de Datos 2026).
-//
-// Ambos sketches comparten la misma estructura de ventana (SlidingWindow<S>):
-// sólo cambian el signo de la actualización y el estimador. Se calculan en una
-// sola pasada sobre la traza y, si se piden varios anchos (-w 1024,4096,16384),
-// también todos los anchos en la misma pasada.
-//
-// Compilación:
-//     g++ -O2 -march=native -std=c++17 -o sliding_sketch sliding_sketch.cpp
-//
-// Uso típico:
-//     ./sliding_sketch traza_ddos.bin --key dst --query 163.210.30.13
-//         -d 5 -w 1024,4096,16384 --seed 42 --out sk_ddos.csv
-//         --verify exact_ddos.csv
-//
-// Convención temporal (idéntica a exact_hh):
-//   - t0 es la marca del primer paquete; la subventana q (q >= 1) cubre
-//     (t0 + (q-1)p, t0 + q p] y ocupa la ranura (q-1) mod m.
-//   - Los paquetes con ts == t0 no pertenecen a ninguna ventana evaluada
-//     (exact_hh tampoco los cuenta: su ventana 0 es (t0, t0 + W]).
-//   - Las evaluaciones ocurren en tau_j = t0 + W + j p mientras tau_j <= t_fin,
-//     y en tau_j el agregado contiene las subventanas j+1, ..., j+m.
-//   - Todo se calcula con enteros en microsegundos.
-//
-// Delta f_j(x): al expirar la subventana q-m se inicializa dA = -S_{q-m}
-// (antes de limpiar la ranura) y al evaluar se suma S_q, de modo que
-// dA = S_q - S_{q-m} = A_j - A_{j-1} sin guardar una copia de A_{j-1}.
-
 #include <algorithm>
 #include <chrono>
 #include <cinttypes>
@@ -54,13 +24,9 @@ struct Record {
 static_assert(sizeof(Record) == 24, "el registro debe ocupar 24 bytes");
 
 // ------------------------------------------------------------------- hash
-//
-// Familia de Carter-Wegman h(x) = (a x + b) mod P con P = 2^61 - 1, que es
-// 2-universal. La posición en la fila es h(x) mod w. El signo de CountSketch
-// usa una función independiente de la misma familia (otros a, b) y toma su bit
-// menos significativo: como h(x) es casi uniforme en [0, P), ese bit es
-// insesgado salvo un término O(1/P), y los signos de dos claves distintas son
-// (casi) independientes por pares, que es lo que exige el análisis de CS.
+
+// Carter-Wegman (a x + b) mod (2^61 - 1). El signo de CS usa otra función de
+// la misma familia y toma su bit menos significativo.
 
 static const uint64_t P61 = (1ull << 61) - 1;
 
