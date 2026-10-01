@@ -115,11 +115,11 @@
 
 \section{Resumen}
 
-Implementamos Count-Min Sketch (CMS) y CountSketch (CS) sobre una ventana de $W=60$\,s que avanza cada $p=10$\,s, mantenida con un anillo de seis sub-sketches y un agregado. Sobre una traza MAWI se inyectan un DDoS y un scan de 30\,s desde el segundo 300. El error baja al aumentar $w$, y CS fue más preciso que CMS con la misma memoria. Ambos detectan el DDoS en la misma evaluación que la referencia exacta; en el scan, con $w=256$ declaran el ataque una ventana antes.
+Implementamos Count-Min Sketch (CMS) y CountSketch (CS) sobre una ventana de $W=60$\,s que avanza cada $p=10$\,s. Para mantenerla usamos un anillo de seis sub-sketches y un agregado. A partir de una traza MAWI generamos un DDoS y un scan de 30\,s, ambos desde el segundo 300. Al aumentar $w$, el error disminuye y CS resulta más preciso que CMS con la misma memoria. Los dos detectan el DDoS en la misma evaluación que la referencia exacta. En el scan, con $w=256$, ambos sketches lo declaran una ventana antes.
 
 \section{Datos y configuración}
 
-La traza base es MAWI samplepoint-F del 3 de diciembre de 2018, 14:00 (\url{https://mawi.wide.ad.jp/mawi/samplepoint-F/2018/201812031400.pcap.gz}): 123\,383\,971 paquetes IPv4 en 899,96\,s. Con \code{inject\_attack.py} (\textbf{semilla 42}, inicio 300\,s, duración 30\,s) se generan un \textbf{DDoS} de 10\,000 paquetes/s desde 4\,000 fuentes hacia \code{163.210.30.13} (clave: IP destino) y un \textbf{scan} de 8\,000 paquetes/s desde \code{198.18.0.7} hacia 60\,000 destinos (clave: IP origen). Se usa $d=5$, $\varphi=0{,}01$ y $w\in\{256,1024,4096,16384\}$, con semilla de hash 42 y repeticiones con 7 y 1234.
+Usamos la traza MAWI samplepoint-F del 3 de diciembre de 2018 a las 14:00 (\url{https://mawi.wide.ad.jp/mawi/samplepoint-F/2018/201812031400.pcap.gz}), que contiene 123\,383\,971 paquetes IPv4 y dura 899,96\,s. Con \code{inject\_attack.py} generamos dos ataques, ambos con semilla 42, inicio en 300\,s y duración de 30\,s. El DDoS envía 10\,000 paquetes/s desde 4\,000 fuentes a \code{163.210.30.13}; por eso contamos la IP de destino. El scan envía 8\,000 paquetes/s desde \code{198.18.0.7} a 60\,000 destinos; en este caso contamos la IP de origen. En los experimentos usamos $d=5$, $\varphi=0{,}01$ y $w\in\{256,1024,4096,16384\}$. La semilla principal de hash es 42 y también repetimos las corridas con 7 y 1234.
 
 \section{Diseño de la ventana deslizante}
 
@@ -133,11 +133,11 @@ La traza base es MAWI samplepoint-F del 3 de diciembre de 2018, 14:00 (\url{http
 
 \section{Validación sin ataque}
 
-Se compararon con \code{exact\_hh}, en todas las ventanas de la traza base, claves de frecuencia alta, $\approx$1000, $\approx$100 y $\approx$10, por origen y por destino (Tabla~\ref{tab:validacion} del anexo). Para las claves de destino más frecuentes, el error absoluto medio de CMS baja de 7\,740 ($w=256$) a 79 ($w=16384$) y el de CS de 2\,020 a 7,4; el relativo, de 3,22 a 0,035 en CMS y de 0,85 a 0,003 en CS. El error de CMS es casi igual para todas las claves y coincide con su sesgo (la masa de colisiones), por lo que el error relativo explota en las claves poco frecuentes. CS tiene entre 1,7 y 13 veces menos error absoluto y sesgo cercano a cero.
+Comparamos ambos sketches con \code{exact\_hh} en todas las ventanas de la traza base. Incluimos claves de frecuencia alta y claves con frecuencias cercanas a 1000, 100 y 10, tanto por origen como por destino (Tabla~\ref{tab:validacion} del anexo). Para las claves de destino más frecuentes, el error absoluto medio de CMS baja de 7\,740 ($w=256$) a 79 ($w=16384$); el de CS, de 2\,020 a 7,4. El error relativo baja de 3,22 a 0,035 para CMS y de 0,85 a 0,003 para CS. CMS mantiene un sesgo positivo por las colisiones, lo que hace que el error relativo sea especialmente alto en las claves poco frecuentes. CS tiene entre 1,7 y 13 veces menos error absoluto y un sesgo cercano a cero.
 
 \section{Detección de ataques}
 
-El MRE se promedia sobre $J$: evaluaciones con $300<\tau_j<390$\,s y $f_j(x)>0$ (8 ventanas). La Tabla~\ref{tab:resumen} usa la semilla 42; la media entre semillas y el error de cada ventana están en \code{resultados/}.
+Calculamos el MRE sobre el conjunto $J$, que incluye las evaluaciones con $300<\tau_j<390$\,s y $f_j(x)>0$ (8 ventanas). La Tabla~\ref{tab:resumen} muestra los resultados para la semilla 42. En \code{resultados/} dejamos también la media entre semillas y el error de cada ventana.
 
 \begin{table}[H]
 \centering\small
@@ -184,20 +184,20 @@ Scan & 16384 & 2\,240 & 0,000160 & 0,0000753 & 20 & 20 & 20 & 0 & 0 \\
 \label{fig:delta}
 \end{figure}
 
-El mayor incremento exacto ocurre a los 310\,s ($+100\,008$ en el DDoS, $+80\,000$ en el scan) y el mayor decremento a los 370\,s, cuando el ataque empieza a salir de la ventana ($-100\,007$ y $-80\,000$). Con $w=256$ no hay un ganador claro (Tabla~\ref{tab:delta} del anexo): en el DDoS, CS se equivoca algo menos en ambos extremos (4\,996 contra 5\,190 en el incremento); en el scan, CMS-mediana es mejor en el incremento (78 contra 133) y peor en el decremento (417 contra 155). Con $w=16384$ ambos aciertan con a lo más 3 paquetes de error. La diferencia está en las garantías: CS sigue siendo insesgado sobre un vector firmado y CMS-mediana no tiene cota conocida.
+El mayor aumento exacto ocurre a los 310\,s ($+100\,008$ en el DDoS y $+80\,000$ en el scan). A los 370\,s observamos la mayor disminución, cuando los paquetes del ataque empiezan a salir de la ventana ($-100\,007$ y $-80\,000$). Con $w=256$ los resultados dependen del ataque (Tabla~\ref{tab:delta} del anexo): en el DDoS, CS se acerca más al valor exacto en ambos extremos (4\,996 frente a 5\,190 de error en el incremento); en el scan, CMS-mediana se acerca más en el incremento (78 frente a 133), pero CS lo hace en el decremento (155 frente a 417). Con $w=16384$, ambos quedan a no más de 3 paquetes del valor exacto. CS conserva su estimador para vectores con valores positivos y negativos; CMS-mediana no tiene una cota conocida en este caso.
 
 \section{Respuestas a las preguntas}
 
 \begin{enumerate}[leftmargin=*]
-\item \textbf{Linealidad.} El sketch de una unión de flujos es la suma de sus sketches, así que el de la ventana es la suma de los de sus subventanas. Al avanzar basta restar el que sale y sumar el que entra: $2dw$ contadores, sin recorrer los paquetes de la ventana.
+\item Linealidad. El sketch de la ventana es la suma de los sketches de sus subventanas. Cuando avanza, restamos el que sale y sumamos el que entra: actualizamos $2dw$ contadores sin recorrer los paquetes que siguen en la ventana.
 
-\item \textbf{Error al reducir $w$.} Ambos crecen por colisiones, aproximadamente como $1/w$. En CMS todas las colisiones suman: el error es positivo y similar para todas las claves, y el mínimo sólo lo acota. En CS los signos aleatorios cancelan las colisiones en promedio y la mediana descarta las filas peores, así que el error es menor pero tiene ambos signos y fluctúa entre semillas.
+\item Error al reducir $w$. En ambos sketches aumentan las colisiones. En CMS sus contribuciones se suman y el error queda sesgado hacia arriba. En CS los signos aleatorios permiten que las colisiones se cancelen en promedio. Por eso CS suele tener menos error, aunque puede sobreestimar o subestimar y sus resultados cambian entre semillas.
 
-\item \textbf{Ataque más claro y claves.} El DDoS: supera el umbral con holgura en la primera ventana y todas las configuraciones coinciden con la referencia. El scan queda justo bajo el umbral al inicio, y ahí aparecen los falsos positivos. La clave cambia porque el DDoS concentra el tráfico en un destino (muchas fuentes, una víctima) y el scan en un origen (un atacante, muchos destinos).
+\item Ataque más claro y claves. El DDoS supera el umbral con holgura en la primera ventana afectada y todas las configuraciones coinciden con la referencia. El scan queda cerca del umbral al inicio, donde aparecen falsos positivos con el ancho menor. Para el DDoS contamos destinos porque muchas fuentes envían tráfico a una víctima; para el scan contamos orígenes porque un atacante contacta muchos destinos.
 
-\item \textbf{Qué aporta $\Delta f_j$.} $f_j$ integra 60\,s: sube y baja gradualmente y sigue alta hasta 60\,s después del ataque. $\Delta f_j$ marca el instante en que cambia la tasa, con un salto positivo al inicio (310\,s) y uno negativo cuando el ataque sale de la ventana (370\,s), sin depender del nivel de fondo.
+\item Qué aporta $\Delta f_j$. La frecuencia $f_j$ resume los últimos 60\,s, así que sube y baja gradualmente y puede seguir alta después del ataque. En cambio, $\Delta f_j$ muestra cuándo cambia la frecuencia: observamos un aumento al inicio (310\,s) y una disminución cuando los paquetes salen de la ventana (370\,s).
 
-\item \textbf{CS frente a CMS-mediana.} Cada fila de CS, $s_i(x)\,\Delta A_j[i][h_i(x)]$, es un estimador insesgado aunque el vector tenga valores negativos, porque las colisiones entran con signo aleatorio; la mediana conserva su cota habitual. El mínimo de CMS se justifica sólo si cada fila sobreestima, lo que exige frecuencias no negativas. En $\Delta A_j$ las colisiones tienen cualquier signo y no se cancelan, así que la mediana de CMS puede quedar sesgada y no tiene garantía, aunque en estos datos ambos estimadores fueron comparables.
+\item CS frente a CMS-mediana. Cada fila de CS, $s_i(x)\,\Delta A_j[i][h_i(x)]$, sigue siendo insesgada aunque el vector incluya valores negativos: el signo aleatorio también se aplica a las colisiones. En CMS, el mínimo funciona con frecuencias no negativas porque cada fila sobreestima. Como $\Delta A_j$ puede tener valores de ambos signos, usamos la mediana en lugar del mínimo; sin embargo, esta variante de CMS puede quedar sesgada y no tiene la garantía habitual. En nuestros resultados, los dos estimadores fueron comparables.
 \end{enumerate}
 
 \section{Conclusiones}
