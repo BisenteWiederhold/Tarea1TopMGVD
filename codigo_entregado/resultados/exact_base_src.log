@@ -1,0 +1,6 @@
+== ground truth por ventana ==
+W = 60.000 s, delta = 10.000 s, phi = 0.01, k = 20
+ventanas evaluadas   : 84
+claves activas       : media 352987, máx 381193
+memoria de la tabla  : 20.6 MB (máx, estimada)
+VmHWM del proceso    : 2836.5 MB (incluye la traza mapeada)

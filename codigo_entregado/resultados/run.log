@@ -1,0 +1,64 @@
+[1/5] Compilando
+[2/5] Trazas
+[1/5] Verificando requisitos
+
+[notice] A new release of pip is available: 26.1.2 -> 26.2.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+[2/5] Compilando herramientas
+  exact_hh compilado en WSL (ejecutar con: wsl ./exact_hh ...)
+[3/5] traza.bin ya existe, se omite la descarga
+[4/5] Inyectando ataques (semilla 42)
+[5/5] Verificando tamaños (24 bytes por registro)
+  OK   traza.bin: 123383971 registros
+  OK   traza_ddos.bin: 123683971 registros
+  OK   traza_scan.bin: 123623971 registros
+Listo.
+[3/5] Referencia exacta (exact_hh)
+  resultados/exact_base_dst.csv ya existe
+  resultados/exact_base_src.csv ya existe
+  resultados/exact_ddos.csv ya existe
+  resultados/exact_scan.csv ya existe
+  resultados/exact_ddos_bajo.csv ya existe
+  resultados/exact_scan_bajo.csv ya existe
+[4/5] Sketches (d=5, w=256,1024,4096,16384, semillas: 42 7 1234)
+  base_dst, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  base_dst, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  base_dst, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  base_src, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  base_src, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  base_src, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos_bajo, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos_bajo, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  ddos_bajo, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan_bajo, semilla 42
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan_bajo, semilla 7
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+  scan_bajo, semilla 1234
+autoverificación OK  : N_j coincide con exact_hh en las 84 ventanas
+[5/5] Figuras y tablas
+  File "C:\Projects\Tarea1TopMGVD\codigo_entregado\analisis.py", line 199
+    ax.set_ylabel(f"error {nombre}
+                  ^
+SyntaxError: unterminated f-string literal (detected at line 199)
