@@ -2,7 +2,7 @@
 
 Tópicos en Manejo de Grandes Volúmenes de Datos (UdeC), 2026.
 
-Se estima la frecuencia de una IP en una ventana deslizante de W = 60 s, que avanza cada p = 10 s, con **Count-Min Sketch (CMS)** y **CountSketch (CS)**. Con esa estimación se detectan dos ataques sintéticos inyectados en una traza real de MAWI: un **DDoS** (clave: IP de destino) y un **scan** (clave: IP de origen). El enunciado completo está en `Tarea1_2026.md`.
+Se estima la frecuencia de una IP en una ventana deslizante de W = 60 s, que avanza cada p = 10 s, con **Count-Min Sketch (CMS)** y **CountSketch (CS)**. Con esa estimación se detectan dos ataques sintéticos inyectados en una traza real de MAWI: un **DDoS** (clave: IP de destino) y un **scan** (clave: IP de origen).
 
 ## Datos
 
@@ -22,10 +22,9 @@ Si el pcap ya está en `~/Downloads/201812031400.pcap.gz`, `preparar_trazas.sh` 
 
 ## Informe y presentación
 
-- **Informe**: [`informe/informe.tex`](informe/informe.tex) es la versión de entrega, con el formato de los informes de la facultad (encabezado con el escudo y portada con el logo del departamento). Se compila con pdfLaTeX: en Overleaf basta con subir la carpeta `informe/` completa, que ya trae los logos y las cuatro figuras. [`INFORME.md`](INFORME.md) es el borrador previo en Markdown.
+- **Informe**: [`informe/informe.tex`](informe/informe.tex). Para compilarlo en Overleaf, sube la carpeta `informe/` completa, que contiene los logos y las figuras utilizadas.
 - **Presentación oral** (10 min): [`codigo_entregado/presentacion_tarea1.pptx`](codigo_entregado/presentacion_tarea1.pptx), 9 diapositivas con notas del presentador.
-- Los nombres de los integrantes están como marcador (`[Integrante 1]`, `[completar nombres]`) en el informe y en la portada de la presentación.
-- El estado del trabajo está en [`PENDIENTES.md`](PENDIENTES.md).
+- Antes de entregar, completa los nombres y matrículas del grupo en el informe y los nombres en la portada de la presentación.
 
 ## Requisitos
 

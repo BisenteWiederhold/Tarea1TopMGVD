@@ -3,6 +3,7 @@
 201812031400.pcap
 *.pcap.gz
 preparar_trazas.log
+resultados/*.log
 exact_hh
 pcap2bin
 sliding_sketch
