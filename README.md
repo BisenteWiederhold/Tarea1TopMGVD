@@ -23,8 +23,7 @@ Si el pcap ya está en `~/Downloads/201812031400.pcap.gz`, `preparar_trazas.sh` 
 ## Informe y presentación
 
 - **Informe**: [`informe/informe.tex`](informe/informe.tex). Para compilarlo en Overleaf, sube la carpeta `informe/` completa, que contiene los logos y las figuras utilizadas.
-- **Presentación oral** (10 min): [`codigo_entregado/presentacion_tarea1.pptx`](codigo_entregado/presentacion_tarea1.pptx), 9 diapositivas con notas del presentador.
-- Antes de entregar, completa los nombres y matrículas del grupo en el informe y los nombres en la portada de la presentación.
+- Antes de entregar, completa los nombres y matrículas del grupo en el informe.
 
 ## Requisitos
 
