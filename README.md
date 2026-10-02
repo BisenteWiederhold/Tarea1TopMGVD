@@ -20,22 +20,52 @@ Las trazas (`*.bin`, `*.pcap.gz`, alrededor de 3 GB cada una) **no se suben al r
 
 Si el pcap ya está en `~/Downloads/201812031400.pcap.gz`, `preparar_trazas.sh` lo usa directamente y evita descargar otra copia. También se puede indicar una ruta distinta con `PCAP_SOURCE=/ruta/al/201812031400.pcap.gz`. La conversión de `pcap2bin` funciona en macOS/Linux además de Windows.
 
-## Informe y presentación
+## Estructura del repositorio
 
-- **Informe**: [`informe/informe.tex`](informe/informe.tex). Para compilarlo en Overleaf, sube la carpeta `informe/` completa, que contiene los logos y las figuras utilizadas.
-- Antes de entregar, completa los nombres y matrículas del grupo en el informe.
+```
+README.md
+codigo/
+├── sliding_sketch.cpp          implementación de la tarea (CMS y CS sobre ventana deslizante)
+├── run_experimentos.sh         script único de reproducción
+├── analisis.py, elegir_claves.py, preparar_trazas.sh
+├── Makefile, requirements.txt
+├── exact_hh.cpp, pcap2bin.cpp, inject_attack.py   herramientas del curso
+├── gt_*.json, claves_*.txt     ground truth de los ataques y claves de validación
+├── presentacion_tarea1.pptx    presentación oral
+└── resultados/                 tablas (.md/.csv) y figuras (.png) de los experimentos
+```
+
+## Resultados principales
+
+Semilla de hash 42; tablas completas en `codigo/resultados/`.
+
+| Ataque | w | Memoria | MRE CMS | MRE CS | Latencia exacta | Latencia CMS / CS | FP CMS / CS |
+|---|---|---|---|---|---|---|---|
+| DDoS | 256 | 35 KiB | 7,56 % | 3,89 % | 10 s | 10 s / 10 s | 0 / 0 |
+| DDoS | 1024 | 140 KiB | 0,863 % | 0,187 % | 10 s | 10 s / 10 s | 0 / 0 |
+| Scan | 256 | 35 KiB | 5,19 % | 2,17 % | 20 s | 10 s / 10 s | 2 / 2 |
+| Scan | 1024 | 140 KiB | 0,543 % | 0,127 % | 20 s | 20 s / 20 s | 0 / 0 |
+
+- La ventana se mantiene por linealidad: al rotar se resta la subventana que sale y se suma la que entra (2·d·w contadores, sin recorrer paquetes). N_j coincide con `exact_hh` en las 84 ventanas de todas las corridas.
+- Con la misma memoria, CS es entre 2 y 30 veces más preciso que CMS y casi sin sesgo, aunque varía más entre semillas. CMS siempre sobreestima.
+- El DDoS se detecta igual que con el conteo exacto con todos los anchos. En el scan, con w = 256, el sesgo de CMS adelanta la detección y produce falsos positivos (310 y 380 s) con las tres semillas; CS sólo con la semilla 42. Desde w = 1024 ambos coinciden con la referencia exacta.
+- Δf marca la entrada (310 s) y la salida (370 s) del ataque. CS lo estima con su estimador habitual; CMS-mediana es una variante sin garantía.
+
+## Presentación
+
+[`codigo/presentacion_tarea1.pptx`](codigo/presentacion_tarea1.pptx): presentación oral de 10 minutos sobre el diseño de la ventana deslizante, el uso de la linealidad, los resultados de ambos ataques y la comparación entre CMS y CS.
 
 ## Requisitos
 
 - `g++` con C++17. En Windows: MSYS2 UCRT64, ejecutando los scripts desde Git Bash o MSYS2.
 - `exact_hh` usa `mmap`, así que en Windows se compila y corre en **WSL** con g++ (`wsl -u root -e sh -c "apt update && apt install -y g++"`). En Linux corre de forma nativa.
-- Python 3 con `pip install -r codigo_entregado/requirements.txt` (numpy, matplotlib y pandas).
+- Python 3 con `pip install -r codigo/requirements.txt` (numpy, matplotlib y pandas).
 - `curl` y `gzip`, sólo si hay que descargar la traza.
 
 ## Reproducir todo
 
 ```bash
-cd codigo_entregado
+cd codigo
 bash run_experimentos.sh          # FORCE=1 bash run_experimentos.sh rehace todo
 ```
 
@@ -49,7 +79,7 @@ El script es idempotente: omite lo que ya existe. Hace lo siguiente:
 
 Con las trazas ya generadas tarda unos 10 minutos: alrededor de 1 minuto por cada corrida de `exact_hh` en WSL y unos 13 s por cada corrida de `sliding_sketch`.
 
-## Archivos (`codigo_entregado/`)
+## Archivos (`codigo/`)
 
 | Archivo | Contenido |
 |---|---|
@@ -62,7 +92,7 @@ Con las trazas ya generadas tarda unos 10 minutos: alrededor de 1 minuto por cad
 | `exact_hh.cpp`, `pcap2bin.cpp`, `inject_attack.py` | Herramientas entregadas por el curso. Sólo se modificó `pcap2bin.cpp`: `<io.h>` y `_setmode` quedaron bajo `#ifdef _WIN32` para que compile en macOS y Linux; la conversión no cambia |
 | `Makefile` | Compila `pcap2bin`, `exact_hh` y `sliding_sketch` (en MinGW usar `make LDFLAGS=-static`) |
 
-### Resultados (`codigo_entregado/resultados/`)
+### Resultados (`codigo/resultados/`)
 
 Los experimentos se llaman `base_dst` y `base_src` (validación sin ataque), `ddos`, `scan`, `ddos_bajo` y `scan_bajo`.
 
